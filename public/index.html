@@ -4,12 +4,29 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+     <title>Website Audit Report - Consolidated Crawling Status</title>
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
       content="Web site created using create-react-app"
     />
+
+     <!-- Theme color for address bar on mobile browsers -->
+    <meta name="theme-color" content="#1a202c"> <!-- Darker theme color -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -25,8 +42,86 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+
+    <style>
+        /* Custom styles for a professional 'Tech touch' UI */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #1a202c; /* Dark charcoal background */
+            color: #e2e8f0; /* Light gray text for contrast */
+        }
+        .card {
+            background-color: #2d3748; /* Slightly lighter dark gray for cards */
+            border: 1px solid #4a5568; /* Subtle border */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Softer, deeper shadow */
+            border-radius: 0.75rem; /* Rounded corners */
+        }
+        .header-button {
+            background-color: #3f51b5; /* Deeper blue for buttons */
+            color: #ffffff;
+            border: none;
+            transition: background-color 0.2s ease-in-out;
+            padding: 0.65rem 1.25rem; /* Slightly larger padding */
+            border-radius: 0.5rem;
+            font-weight: 600; /* Medium bold */
+        }
+        .header-button:hover {
+            background-color: #303f9f; /* Darker blue on hover */
+        }
+        /* Custom colors for better tech contrast */
+        .text-green-400 {
+            color: #81c784; /* A more subtle, tech-friendly green */
+        }
+        .text-yellow-400 {
+            color: #ffd54f; /* A more subtle, tech-friendly yellow */
+        }
+        .text-red-300 {
+            color: #ef9a9a; /* A more subtle, tech-friendly red for warnings */
+        }
+        .text-blue-400 {
+            color: #64b5f6; /* A more subtle, tech-friendly blue for icons */
+        }
+
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d3748; /* Track matches card background */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568; /* Thumb matches subtle border */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5a6a80; /* Slightly lighter on hover */
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr; /* Field, Result, Description */
+            gap: 1rem;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #4a5568;
+        }
+        .metric-grid:last-child {
+            border-bottom: none;
+        }
+        .metric-grid-header {
+            font-weight: 600;
+            color: #e2e8f0;
+            background-color: #4a5568;
+            padding: 0.75rem 1rem;
+            border-top-left-radius: 0.5rem;
+            border-top-right-radius: 0.5rem;
+        }
+    </style>
   </head>
-  <body>
+  <body class="bg-gray-900 text-gray-200">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
@@ -39,5 +134,72 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+     <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // JavaScript for dynamic content updates (Example for Crawl Progress)
+        document.addEventListener('DOMContentLoaded', () => {
+            const sessionStatusText = document.getElementById('session-status-text');
+            const sessionStatusDescription = document.getElementById('session-status-description');
+            const sessionStatusIcon = document.getElementById('session-status-icon');
+            const detailedStatusTitle = document.getElementById('detailed-status-title');
+            const detailedStatusIcon = document.getElementById('detailed-status-icon');
+            const stopReasonTitle = document.getElementById('stop-reason-title');
+            const stopReasonIcon = document.getElementById('stop-reason-icon');
+            const sslStatusText = document.getElementById('ssl-status-text');
+            const sslStatusIcon = document.getElementById('ssl-status-icon');
+            const sslExpirationText = document.getElementById('ssl-expiration-text');
+
+            // Example of how to change the status dynamically
+            // You would typically fetch this data from an API
+            const isCrawlFinished = true; // Set to true to see 'Finished' status
+            const hasCrawlErrors = false; // Set to true to see 'Errors Detected'
+
+            if (isCrawlFinished) {
+                sessionStatusText.textContent = 'Session: Finished';
+                sessionStatusText.classList.remove('text-red-300');
+                sessionStatusText.classList.add('text-green-400');
+                sessionStatusDescription.textContent = 'The crawling session has completed successfully.';
+                sessionStatusIcon.setAttribute('data-lucide', 'check-circle-2');
+                sessionStatusIcon.classList.remove('text-red-300');
+                sessionStatusIcon.classList.add('text-green-400');
+            }
+
+            if (hasCrawlErrors) {
+                detailedStatusTitle.textContent = 'Errors Detected';
+                detailedStatusTitle.classList.remove('text-green-400');
+                detailedStatusTitle.classList.add('text-red-300');
+                detailedStatusIcon.setAttribute('data-lucide', 'alert-triangle');
+                detailedStatusIcon.classList.remove('text-green-400');
+                detailedStatusIcon.classList.add('text-red-300');
+                detailedStatusIcon.nextElementSibling.querySelector('p').textContent = 'Some crawling errors were detected. Review the full report.';
+            }
+
+            // Example of SSL Expiration warning
+            const sslExpirationDate = new Date('2025-06-19T02:59:00Z'); // Ensure correct format
+            const today = new Date();
+            const daysUntilExpiration = Math.ceil((sslExpirationDate - today) / (1000 * 60 * 60 * 24));
+
+            if (daysUntilExpiration <= 30 && daysUntilExpiration > 0) {
+                sslExpirationText.classList.remove('text-green-400');
+                sslExpirationText.classList.add('text-yellow-400');
+            } else if (daysUntilExpiration <= 0) {
+                sslExpirationText.textContent = 'EXPIRED';
+                sslExpirationText.classList.remove('text-green-400', 'text-yellow-400');
+                sslExpirationText.classList.add('text-red-300');
+                sslStatusText.textContent = 'FALSE';
+                sslStatusText.classList.remove('text-green-400');
+                sslStatusText.classList.add('text-red-300');
+                sslStatusIcon.setAttribute('data-lucide', 'x-circle');
+                sslStatusIcon.classList.remove('text-green-400');
+                sslStatusIcon.classList.add('text-red-300');
+            }
+
+            // Re-render Lucide icons after potential changes
+            lucide.createIcons();
+        });
+    </script>
   </body>
 </html>
